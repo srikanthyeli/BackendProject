@@ -1,1 +1,7 @@
-GET http://loacalhost:50001/get-all
+POST http://localhost:50001/movies
+content-type: application/json
+
+{
+    "title":"mooga",
+    "director":"sidhhha"
+}

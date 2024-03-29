@@ -37,7 +37,7 @@ MongoClient.connect(uri)
 
     app.post("/add-movie", (req, res) => {
       movies
-        .insertOne(req.body)
+        .insertMany(req.body)
         .then((result) => {
           res.status(201).json({ success: true, data: result });
         })
@@ -48,7 +48,7 @@ MongoClient.connect(uri)
         });
     });
 
-    app.get("/get-all", async (req, res) => {
+    app.get("/get-all", (req, res) => {
       movies
         .find({})
         .toArray()
@@ -79,13 +79,30 @@ MongoClient.connect(uri)
         });
     });
 
-    app.get("/get-single", (req, res) => {
+    app.get("/get-single/", (req, res) => {
+      const { id } = req.query;
       movies
-        .find({ title: req.params.title }).toArray()
-        
-
+        .find({ id: id })
+        .toArray()
         .then((results) => {
-          res.status(201).json({ success: true, data: results });
+          res.send({ data: results });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false });
+        });
+    });
+
+    app.get("/get-paginated/", (req, res) => {
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
+      const skip = (page - 1) * size;
+      movies
+        .find()
+        .skip(skip)
+        .limit(size)
+        .toArray()
+        .then((results) => {
+          res.send({ data: results });
         })
         .catch((err) => {
           res.status(500).json({ success: false });
@@ -98,7 +115,7 @@ MongoClient.connect(uri)
           title: req.body.title,
         })
         .then((results) => {
-          res.status(200).json({ success: true ,data:results});
+          res.status(200).json({ success: true, data: results });
         })
         .catch((err) => {
           res.status(500).json({ success: false });
