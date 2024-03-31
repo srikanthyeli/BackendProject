@@ -1,7 +1,39 @@
-POST http://localhost:50001/movies
-content-type: application/json
+
+GET http://localhost:5001/get-all
+Content-Type: application/json
+
+###
+GET http://localhost:5001/get-paginated/?spage=1&size=5
+Content-Type: application/json
+
+###
+POST http://localhost:5001/add-movie
+Content-Type: application/json
+
+[
+    {
+        "title":"siveMani",
+        "director":"puri jaganadhan"
+    }
+]
+
+### 
+GET http://localhost:5001/get-single/66063fb0e4bdf68c0e7a9b0d
+Content-Type: application/json
+
+###
+PUT http://localhost:5001/movies
+Content-Type: application/json
 
 {
-    "title":"mooga",
-    "director":"sidhhha"
+    "title":"RRR",
+    "director":"NTR"
+}
+
+###
+DELETE http://localhost:5001/movies
+Content-Type: application/json
+
+{
+    "title":"rudra"
 }
